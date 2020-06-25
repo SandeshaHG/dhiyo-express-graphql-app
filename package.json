@@ -19,12 +19,15 @@
   },
   "homepage": "https://github.com/SandeshaHG/dhiyo-express-graphql-app#readme",
   "dependencies": {
+    "apollo-server": "^2.15.0",
     "bcryptjs": "^2.4.3",
     "express": "^4.17.1",
     "express-graphql": "^0.9.0",
+    "express-session": "^1.17.1",
     "graphql": "^15.1.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.20",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "passport": "^0.4.1"
   }
 }
