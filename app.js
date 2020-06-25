@@ -2,7 +2,7 @@ const express= require("express");
 const app = express();
 const express_graphql = require("express-graphql")
 const bcrypt = require('bcryptjs')
-
+const jwt = require('jsonwebtoken')
 var {buildSchema} = require('graphql')
 
 
@@ -27,7 +27,11 @@ type user{
     userName : String!
     userPassword : String!
 }
-
+type auth{
+    userName: String!
+    token : String!
+    tokenExpiry: Int!
+}
 input userInput{
     name : String!
     userName : String!
@@ -35,7 +39,7 @@ input userInput{
 }
 type showUsers {
     users : [user!]!
-   
+    login(userName: String! , userPassword : String!) : auth
 }
 type signup {
     create(userInput : userInput) : user
@@ -55,7 +59,29 @@ var root= {
     users: () => {
         return users.find()
     },
-    
+    login : async (args) => {
+        const user = await users.findOne({
+            userName : args.userName
+        })
+            if(!user){
+                throw new Error('User does not exist')
+            }
+            var checkIfEqual = await bcrypt.compare(args.userPassword,user.userPassword)
+            if(!checkIfEqual){
+                throw new Error('Incorrect Password')
+            }
+
+            const token = jwt.sign({usrName : user.userName},'confidential',{expiresIn:'1h'})
+
+            const auth = {
+                userName : user.userName,
+                token : token,
+                tokenExpiry : 1
+            }
+            return auth
+            
+       
+    },
     create: (args) =>{
         return users.findOne({
             userName : args.userInput.userName
