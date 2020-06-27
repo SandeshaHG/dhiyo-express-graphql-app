@@ -1,4 +1,4 @@
-const forget_password = require('./forget_password')
+const forget_password = require('./forgot_password')
 const reset_password = require('./reset_password')
 const upload_file = require('./upload_file')
 const sign_up = require('./sign_up')

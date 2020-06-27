@@ -5,7 +5,7 @@ var schema= buildSchema(`
 scalar Upload
 type user{
     name : String!
-    userName : String!
+    email : String!
     userPassword : String!
 }
 type File {
@@ -14,24 +14,25 @@ type File {
     encoding: String!
   }
 type auth{
-    userName: String!
+    email: String!
+    name: String!
     token : String!
     tokenExpiry: Int!
 }
 input signUpInput{
     name : String!
-    userName : String!
+    email : String!
     userPassword : String!
 }
 type allQueries {
-    login(userName: String! , userPassword : String!) : auth
-    forgotPassword(userName: String!) : String!
+    login(email: String! , userPassword : String!) : auth
+    forgotPassword(email: String!) : user!
 
 }
 type allMutations {
-    signUp(userInput : signUpInput) : user
-    upload(userName : String! , file : Upload!) : File!
-    resetPassword(userName : String! , userPassword : String!) : String!
+    signUp(userInput : signUpInput! ) : user!
+    upload(email : String! , file : Upload!) : File!
+    resetPassword(email : String! , userPassword : String!) : user!
 }
 
 schema {

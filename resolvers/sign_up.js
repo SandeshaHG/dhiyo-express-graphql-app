@@ -3,13 +3,14 @@ const jwt = require('jsonwebtoken')
 const users = require('./../models/user.model');
 
 module.exports = {
-    signup: (args) =>{
+    signUp: (args) =>{
+
         return users.findOne({
-            userName : args.userInput.userName
+            email : args.userInput.email
         })
         .then(user => {
             if(user){
-                throw new Error('username already present');
+                throw new Error('email already present');
             }
 
             return bcrypt.hash(args.userInput.userPassword,12)
@@ -18,9 +19,10 @@ module.exports = {
             
             const newUser = new users({
                 name : args.userInput.name,
-                userName : args.userInput.userName,
+                email : args.userInput.email,
                 userPassword : hashedPassword
             });
+            console.log(newUser)
             return newUser.save()
         }).catch(err => {
             throw err;
