@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const path = require('path')
 const express_graphql = require("express-graphql")
 const boydParser = require('body-parser')
 
@@ -7,6 +8,7 @@ const boydParser = require('body-parser')
 const multer = require('multer')
 var id =null
 
+const PORT = process.env.PORT||5000
 app.use(express.static(__dirname + '/uploads'));
 
 app.use((req, res, next) => {
@@ -18,6 +20,13 @@ app.use((req, res, next) => {
     }
     next();
 });
+
+if(process.env.NODE_ENV=="production"){
+    app.use(express.static('build'))
+    app.get('*',(req,res)=>{
+        res.sendFile(path.join(__dirname,'build' , 'index.html'))
+    })
+}
 app.post('/uploadjavatpoint',  function (req, res) {
     
     var file_name
@@ -68,10 +77,8 @@ mongoose.connect(`mongodb+srv://c7cmsiRs2cH49shr:c7cmsiRs2cH49shr@cluster0-xav7o
 });
 
 //Init
+const path = require('path');const port = process.env.PORT || 5000;
 
-app.get('/', function (req, res) {
-    res.send("Hey there :)")
-});
 
 app.listen("5000", () => {
     

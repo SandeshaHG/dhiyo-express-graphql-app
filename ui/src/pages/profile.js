@@ -69,7 +69,7 @@ class ProfilePage extends Component {
       }
     }
     
-    fetch('http://localhost:5000/graphql', {
+    fetch('/graphql', {
       method: 'POST',
       body: JSON.stringify(requestBody),
       headers: {
@@ -111,7 +111,7 @@ class ProfilePage extends Component {
         id : _id
       }
     };*/ 
-    fetch('http://localhost:5000/uploadjavatpoint', {
+    fetch('/uploadjavatpoint', {
       method: 'POST',
       body: form_data,
     }).then(response => response.json())
@@ -161,7 +161,7 @@ class ProfilePage extends Component {
               />
               <CardMedia
                 className={classes.media}
-                image = {"http://localhost:5000/" +localStorage.getItem('image')}
+                image = {"/" +localStorage.getItem('image')}
               />
             
               <CardContent>

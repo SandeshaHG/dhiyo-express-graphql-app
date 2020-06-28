@@ -7,11 +7,6 @@ import ProfilePage from './pages/profile'
 import ForgotPasswordPage from './pages/forgot_password'
 import AuthContext from './context/auth_context'
 
-import ReactDOM from 'react-dom';
-import { createUploadLink } from 'apollo-upload-client';
-import { ApolloClient } from 'apollo-client';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { ApolloProvider } from 'react-apollo';
 
 class App extends Component {
   state = {
