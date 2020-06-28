@@ -9,6 +9,7 @@ const multer = require('multer')
 var id =null
 
 const PORT = process.env.PORT||5000
+app.listen(PORT)
 app.use(express.static(__dirname + '/uploads'));
 
 app.use((req, res, next) => {
@@ -21,10 +22,14 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use('/' , (req,res) => {
+    res.sendFile(path.join(__dirname,'ui/build' , 'index.html'))
+})
+
 if(process.env.NODE_ENV=="production"){
-    app.use(express.static('build'))
+    app.use(express.static('ui/build'))
     app.get('*',(req,res)=>{
-        res.sendFile(path.join(__dirname,'build' , 'index.html'))
+        res.sendFile(path.join(__dirname,'ui/build' , 'index.html'))
     })
 }
 app.post('/uploadjavatpoint',  function (req, res) {
@@ -76,10 +81,4 @@ mongoose.connect(`mongodb+srv://c7cmsiRs2cH49shr:c7cmsiRs2cH49shr@cluster0-xav7o
     }
 });
 
-//Init
-const path = require('path');const port = process.env.PORT || 5000;
 
-
-app.listen("5000", () => {
-    
-})
