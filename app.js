@@ -22,16 +22,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/' , (req,res) => {
-    res.sendFile(path.join(__dirname,'ui/build' , 'index.html'))
-})
 
-if(process.env.NODE_ENV=="production"){
-    app.use(express.static('ui/build'))
-    app.get('*',(req,res)=>{
-        res.sendFile(path.join(__dirname,'ui/build' , 'index.html'))
-    })
-}
 app.post('/uploadjavatpoint',  function (req, res) {
     
     var file_name
@@ -81,4 +72,10 @@ mongoose.connect(`mongodb+srv://c7cmsiRs2cH49shr:c7cmsiRs2cH49shr@cluster0-xav7o
     }
 });
 
+if(process.env.NODE_ENV=="production"){
+    app.use(express.static('ui/build'))
+    app.get('*',(req,res)=>{
+        res.sendFile(path.join(__dirname,'ui/build' , 'index.html'))
+    })
+}
 
