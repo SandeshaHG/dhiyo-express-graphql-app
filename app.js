@@ -6,9 +6,9 @@ const boydParser = require('body-parser')
 
 
 const multer = require('multer')
-var id =null
+var id = null
 
-const PORT = process.env.PORT||5000
+const PORT = process.env.PORT || 5000
 app.listen(PORT)
 app.use(express.static(__dirname + '/uploads'));
 
@@ -23,20 +23,20 @@ app.use((req, res, next) => {
 });
 
 
-app.post('/uploadjavatpoint',  function (req, res) {
-    
+app.post('/uploadjavatpoint', function (req, res) {
+
     var file_name
     var storage = multer.diskStorage({
-        
+
         destination: function (req, file, callback) {
             callback(null, './uploads');
         },
         filename: function (req, file, callback) {
             extension = file.mimetype
             filename_id = req.body.name_id
-            if(extension == 'image/png') extension = 'png'
-            if(extension == 'image/jpg') extension = 'jpg'
-            if(extension == 'image/jpeg') extension = 'jpeg'
+            if (extension == 'image/png') extension = 'png'
+            if (extension == 'image/jpg') extension = 'jpg'
+            if (extension == 'image/jpeg') extension = 'jpeg'
             file_name = filename_id + "." + extension
             callback(null, file_name);
         }
@@ -56,26 +56,26 @@ var graphqlResolvers = require('./resolvers/resolver')
 
 //MongoDB connection 
 const mongoose = require("mongoose")
-mongoose.connect( process.env.MONGODB_URI ||  'mongodb+srv://c7cmsiRs2cH49shr:c7cmsiRs2cH49shr@cluster0-xav7o.mongodb.net/usersDB?retryWrites=true&w=majority', { useNewUrlParser: true }, (error) => {
+mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://c7cmsiRs2cH49shr:c7cmsiRs2cH49shr@cluster0-xav7o.mongodb.net/usersDB?retryWrites=true&w=majority', { useNewUrlParser: true }, (error) => {
     if (!error) {
-
+        //routing graphql
+        app.use('/graphql', express_graphql({
+            schema: schema,
+            rootValue: graphqlResolvers,
+            graphiql: true
+        }));
     }
     else {
-        
+        throw new Error("Databse connection failed")
     }
 });
 
-//routing graphql
-app.use('/graphql', express_graphql({
-    schema: schema,
-    rootValue: graphqlResolvers,
-    graphiql: true
-}));
 
-if(process.env.NODE_ENV=="production"){
+
+if (process.env.NODE_ENV === "production") {
     app.use(express.static('ui/build'))
-    app.get('*',(req,res)=>{
-        res.sendFile(path.join(__dirname,'ui/build' , 'index.html'))
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, 'ui/build', 'index.html'))
     })
 }
 
