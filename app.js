@@ -56,21 +56,21 @@ var graphqlResolvers = require('./resolvers/resolver')
 
 //MongoDB connection 
 const mongoose = require("mongoose")
-mongoose.connect(`mongodb+srv://c7cmsiRs2cH49shr:c7cmsiRs2cH49shr@cluster0-xav7o.mongodb.net/usersDB?retryWrites=true&w=majority`, { useNewUrlParser: true }, (error) => {
+mongoose.connect( process.env.MONGODB_URI ||  'mongodb+srv://c7cmsiRs2cH49shr:c7cmsiRs2cH49shr@cluster0-xav7o.mongodb.net/usersDB?retryWrites=true&w=majority', { useNewUrlParser: true }, (error) => {
     if (!error) {
-       
-        //routing graphql
-        app.use('/graphql', express_graphql({
-            schema: schema,
-            rootValue: graphqlResolvers,
-            graphiql: true
-        }));
 
     }
     else {
         
     }
 });
+
+//routing graphql
+app.use('/graphql', express_graphql({
+    schema: schema,
+    rootValue: graphqlResolvers,
+    graphiql: true
+}));
 
 if(process.env.NODE_ENV=="production"){
     app.use(express.static('ui/build'))
