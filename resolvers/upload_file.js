@@ -1,10 +1,10 @@
 
-module.exports = { upload: () => {
-        
-    return {
-        filename : "file_name",
-        mimetype : "mimetype",
-        encoding : "encoding"
+module.exports = {
+
+    upload:  (args) => {
+         
+        return "hey";
     }
-}
+
 };
+

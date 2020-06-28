@@ -1,8 +1,7 @@
-const users = require('./../models/user.model')
-const bcrypt = require('bcryptjs')
+const users = require('../models/user.model')
 
 module.exports = {
-    resetPassword :  (args) => {
+    updateImage :  (args) => {
         
         return  users.findOne({
             email : args.email
@@ -12,11 +11,8 @@ module.exports = {
                 throw new Error('User does not exist');
             }
 
-            bcrypt.hash(args.userPassword,12, (err,hash) => {
-                user.userPassword = hash 
-                user.save()
-            });
-            return user
+            user.imageName = args.imageName
+            return user.save()
 
         }).catch(err => {
             throw err;

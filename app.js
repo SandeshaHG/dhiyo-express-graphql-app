@@ -1,42 +1,78 @@
-const express= require("express");
+const express = require("express");
 const app = express();
 const express_graphql = require("express-graphql")
+const boydParser = require('body-parser')
 
-//graphql
-const schema = require('./Schema')
-var graphqlResolvers = require('./resolvers/resolver')
+
+const multer = require('multer')
+var id =null
+
+app.use(express.static(__dirname + '/uploads'));
+
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     if (req.method === 'OPTIONS') {
-      return res.sendStatus(200);
+        return res.sendStatus(200);
     }
     next();
-  });
-//MongoDB connection 
-const mongoose= require("mongoose")
-mongoose.connect(`mongodb+srv://c7cmsiRs2cH49shr:c7cmsiRs2cH49shr@cluster0-xav7o.mongodb.net/usersDB?retryWrites=true&w=majority`,{useNewUrlParser: true } ,(error) =>{
-    if(!error){
+});
+app.post('/uploadjavatpoint',  function (req, res) {
     
-    //routing graphql
-    app.use('/graphql',express_graphql({
-        schema : schema,
-        rootValue: graphqlResolvers,
-        graphiql:true
-    }));
+    var file_name
+    var storage = multer.diskStorage({
+        
+        destination: function (req, file, callback) {
+            callback(null, './uploads');
+        },
+        filename: function (req, file, callback) {
+            extension = file.mimetype
+            filename_id = req.body.name_id
+            if(extension == 'image/png') extension = 'png'
+            if(extension == 'image/jpg') extension = 'jpg'
+            if(extension == 'image/jpeg') extension = 'jpeg'
+            file_name = filename_id + "." + extension
+            callback(null, file_name);
+        }
+    });
+
+    var upload = multer({ storage: storage }).single('myfile')
+    upload(req, res, function (err) {
+        if (err) {
+            return res.end('Err');
+        }
+        return res.json(file_name)
+    });
+});
+//graphql
+const schema = require('./Schema')
+var graphqlResolvers = require('./resolvers/resolver')
+
+//MongoDB connection 
+const mongoose = require("mongoose")
+mongoose.connect(`mongodb+srv://c7cmsiRs2cH49shr:c7cmsiRs2cH49shr@cluster0-xav7o.mongodb.net/usersDB?retryWrites=true&w=majority`, { useNewUrlParser: true }, (error) => {
+    if (!error) {
+       
+        //routing graphql
+        app.use('/graphql', express_graphql({
+            schema: schema,
+            rootValue: graphqlResolvers,
+            graphiql: true
+        }));
 
     }
-    else{
-        console.log(error)
+    else {
+        
     }
 });
 
 //Init
-app.get("/",(req,res)=>{
-    res.send("<h1>It works!!</h1>")
-})
 
-app.listen("5000" , ()=>{
-    console.log("server started")
+app.get('/', function (req, res) {
+    res.send("Hey there :)")
+});
+
+app.listen("5000", () => {
+    
 })

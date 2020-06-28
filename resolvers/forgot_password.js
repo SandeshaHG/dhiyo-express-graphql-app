@@ -26,17 +26,15 @@ module.exports = {
                 from : 'sandeshhg1997@gmail.com',
                 subject : 'Reset Password' ,
                 to : args.email,
-                html : `
-                <p>Hey there</p>
-                <p>Please click on the link below to reset your password</p>
-                <a href="http://localhost:3000/reset_password" >Reset Your Password</a> 
-                    `
+                html : 
+                '<p>Hey there</p><p>Please click on the link below to reset your password</p><a href="http://localhost:3000/reset_password/'+args.email+'">Reset Your Password</a>'
+                    
             }
              transporter.sendMail(body,(err,result) =>{
                 if(err){
-                    console.log(err)
+                    
                 }else{
-                    console.log("sent")
+                    
                 }
              })
              return user.save()

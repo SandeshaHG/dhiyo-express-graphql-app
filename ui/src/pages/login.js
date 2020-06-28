@@ -69,10 +69,12 @@ class LoginPage extends Component{
             query: `
               query login($email: String!, $userPassword: String!) {
                 login(email: $email, userPassword: $userPassword){
+                  _id
                   token
                   tokenExpiry
                   email
                   name
+                  imageName
                 }
               }
             `,
@@ -90,7 +92,7 @@ class LoginPage extends Component{
           }).then((res) => {
               
               if (res.status !== 200 && res.status !== 201) {
-                  console.log('error')
+                  
                   this.isSuccess=false;
                   this.isOpen=true;
                 throw new Error('Failed!');
@@ -102,18 +104,16 @@ class LoginPage extends Component{
               const loginData = data.data.login
               if(!loginData){
                 this.state.dialogTitle= "Failed"
-                this.state.dialogText = "Incorrect Password"
+                this.state.dialogText = data.errors[0].message
                 this.setState({isOpen:true})
-
-                throw new Error('Incorrect Password');
+                throw new Error(data.errors[0].message);
               }
-              console.log(loginData)
               
-              this.context.login(loginData.email , loginData.token , loginData.name , loginData.tokenExpiry)
+              this.context.login(loginData.email , loginData.token , loginData.name ,loginData._id, loginData.tokenExpiry,loginData.imageName)
               
             })
             .catch(err => {
-                console.log(err);
+                
               });
     }
 

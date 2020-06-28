@@ -70,7 +70,7 @@ class ForgotPasswordPage extends Component{
           };
 
         
-        console.log(requestBody)
+        
 
         fetch('http://localhost:5000/graphql', {
             method: 'POST',
@@ -93,7 +93,7 @@ class ForgotPasswordPage extends Component{
               
             })
             .catch(err => {
-                console.log(err);
+                
               });
         
         

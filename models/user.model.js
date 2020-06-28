@@ -12,6 +12,9 @@ var UserSchema = new mongoose.Schema({
     userPassword : {
         type : String,
         required : true
+    },
+    imageName : {
+        type : String,
     }
 });
 

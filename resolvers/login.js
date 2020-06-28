@@ -17,11 +17,13 @@ module.exports = {
             }
 
             const token = jwt.sign({usrName : user.email},'confidential',{expiresIn:'1h'})
-
+            
             const auth = {
+                _id : user._id,
                 email : user.email,
                 name : user.name,
                 token : token,
+                imageName : user.imageName,
                 tokenExpiry : 1
             }
             return auth

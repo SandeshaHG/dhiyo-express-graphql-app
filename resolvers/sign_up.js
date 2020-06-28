@@ -5,6 +5,7 @@ const users = require('./../models/user.model');
 module.exports = {
     signUp: (args) =>{
 
+        
         return users.findOne({
             email : args.userInput.email
         })
@@ -20,9 +21,11 @@ module.exports = {
             const newUser = new users({
                 name : args.userInput.name,
                 email : args.userInput.email,
-                userPassword : hashedPassword
+                userPassword : hashedPassword,
+                imageName : null
+                
             });
-            console.log(newUser)
+            
             return newUser.save()
         }).catch(err => {
             throw err;

@@ -1,12 +1,12 @@
 var {buildSchema} = require('graphql');
-const { ApolloServer, gql } = require('apollo-server');
 
 var schema= buildSchema(`
-scalar Upload
 type user{
+    _id : String!
     name : String!
     email : String!
     userPassword : String!
+    imageName : String!
 }
 type File {
     filename: String!
@@ -14,8 +14,10 @@ type File {
     encoding: String!
   }
 type auth{
+    _id : String!
     email: String!
     name: String!
+    imageName : String 
     token : String!
     tokenExpiry: Int!
 }
@@ -31,8 +33,8 @@ type allQueries {
 }
 type allMutations {
     signUp(userInput : signUpInput! ) : user!
-    upload(email : String! , file : Upload!) : File!
     resetPassword(email : String! , userPassword : String!) : user!
+    updateImage(email : String! , imageName : String!) : user!
 }
 
 schema {

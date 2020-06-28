@@ -56,11 +56,7 @@ class SignUpPage extends Component{
         super(props);
       }
 
-      checkRedirect = () => {
-          if(this.state.isSuccess){
-              this.props.history.push('/')
-          }
-      }
+      checkSuccess = false 
 
       signUpHandler = event => {
         event.preventDefault();
@@ -98,20 +94,21 @@ class SignUpPage extends Component{
             }
           })
           .then(res => {
-                console.log(res)
+                
               if (res.status !== 200 && res.status !== 201) {
-              this.state.dialogText = "There was some issue with the process. Please check your details and try again";
+              this.state.dialogText = "You have already registered. ";
               this.state.dialogTitle = "ERROR"
-              console.log(this.state)
+              
               this.setState({isOpen:true});
                 throw new Error('Failed here!');
               }
               this.state.dialogText = "Welcome "+this.state.name+"!! Your registration is successful";
               this.state.dialogTitle = "SUCCESS"
               this.setState({isOpen:true});
+              this.checkSuccess =true
           })
           .catch(err => {
-            console.log(err);
+            
           });     
       }     
 
@@ -204,7 +201,7 @@ class SignUpPage extends Component{
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.checkRedirect} color="primary" autoFocus>
+          <Button onClick={()=>{this.checkSuccess == true ? this.props.history.push('/') : this.setState({isOpen:false})}} color="primary" autoFocus>
             OK
           </Button>
         </DialogActions>
